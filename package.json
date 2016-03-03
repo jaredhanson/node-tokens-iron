@@ -31,6 +31,6 @@
     "test": "node_modules/.bin/mocha test/*.test.js"
   },
   "dependencies": {
-    "oz": "^4.0.0"
+    "iron": "^4.0.0"
   }
 }
