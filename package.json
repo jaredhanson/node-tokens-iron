@@ -1,7 +1,7 @@
 {
   "name": "tokens-oz",
   "version": "0.0.0",
-  "description": "",
+  "description": "Encode and decode Oz tickets.",
   "author": {
     "name": "Jared Hanson",
     "email": "jaredhanson@gmail.com",
