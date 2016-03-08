@@ -1,7 +1,7 @@
 {
   "name": "tokens-iron",
   "version": "0.0.0",
-  "description": "Encode and decode Oz tickets.",
+  "description": "Encode and decode Iron tickets.",
   "author": {
     "name": "Jared Hanson",
     "email": "jaredhanson@gmail.com",
@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jaredhanson/node-tokens-oz.git"
+    "url": "git://github.com/jaredhanson/node-tokens-iron.git"
   },
   "bugs": {
-    "url": "http://github.com/jaredhanson/node-tokens-oz/issues"
+    "url": "http://github.com/jaredhanson/node-tokens-iron/issues"
   },
   "license": "MIT",
   "licenses": [
