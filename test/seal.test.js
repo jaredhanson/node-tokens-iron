@@ -13,7 +13,12 @@ describe('seal', function() {
     
     before(function() {
       keying = sinon.spy(function(q, cb){
-        return cb(null, [ { secret: '12abcdef7890abcdef7890abcdef7890' } ]);
+        if (q.recipients) {
+          var recipient = q.recipients[0];
+          return cb(null, [ { secret: recipient.secret } ]);
+        }
+        
+        return cb(null, [ { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' } ]);
       });
       
       seal = setup(keying);
@@ -45,7 +50,7 @@ describe('seal', function() {
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
-        expect(token.substr(0, 8)).to.equal('Fe26.2**');
+        expect(token.substr(0, 10)).to.equal('Fe26.2*k1*');
       });
       
       describe('verifying claims', function() {
@@ -99,7 +104,7 @@ describe('seal', function() {
       describe('verifying claims', function() {
         var claims;
         before(function(done) {
-          Iron.unseal(token, '12abcdef7890abcdef7890abcdef7890', Iron.defaults, function(err, c) {
+          Iron.unseal(token, 'API-12abcdef7890abcdef7890abcdef', Iron.defaults, function(err, c) {
             claims = c;
             done(err);
           });
