@@ -22,6 +22,9 @@
     }
   ],
   "main": "./lib",
+  "dependencies": {
+    "iron": "^4.0.0"
+  },
   "devDependencies": {
     "chai": "^3.0.0",
     "make-node": "^0.3.0",
@@ -30,8 +33,5 @@
   },
   "scripts": {
     "test": "node_modules/.bin/mocha test/*.test.js"
-  },
-  "dependencies": {
-    "iron": "^4.0.0"
   }
 }
