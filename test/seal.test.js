@@ -13,8 +13,8 @@ describe('seal', function() {
     
     before(function() {
       keying = sinon.spy(function(q, cb){
-        if (q.recipients) {
-          var recipient = q.recipients[0];
+        if (q.recipient) {
+          var recipient = q.recipient;
           return cb(null, [ { secret: recipient.secret } ]);
         }
         
@@ -42,7 +42,7 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
-          recipients: undefined,
+          recipient: undefined,
           usage: 'encrypt',
           algorithms: [ 'aes256-cbc' ]
         });
@@ -87,10 +87,10 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
-          recipients: [ {
+          recipient: {
             id: 'https://api.example.com/',
             secret: 'API-12abcdef7890abcdef7890abcdef'
-          } ],
+          },
           usage: 'encrypt',
           algorithms: [ 'aes256-cbc' ]
         });
