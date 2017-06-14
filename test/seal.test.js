@@ -44,8 +44,8 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
-          recipient: undefined,
           usage: 'encrypt',
+          recipient: undefined,
           algorithms: [ 'aes256-cbc' ]
         });
       });
