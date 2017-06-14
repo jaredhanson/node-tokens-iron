@@ -20,6 +20,8 @@ describe('seal', function() {
         switch (q.recipient.id) {
         case 'https://api.example.com/':
           return cb(null, [ { secret: 'API-12abcdef7890abcdef7890abcdef' } ]);
+        case 'https://rs1.example.com/':
+          return cb(null, [ { id: 'rs1', secret: 'RS1-12abcdef7890abcdef7890abcdef', algorithm: 'aes128-ctr' } ]);
         }
       });
       
@@ -46,7 +48,7 @@ describe('seal', function() {
         expect(call.args[0]).to.deep.equal({
           usage: 'encrypt',
           recipient: undefined,
-          algorithms: [ 'aes256-cbc' ]
+          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
         });
       });
       
@@ -84,6 +86,10 @@ describe('seal', function() {
         });
       });
       
+      after(function() {
+        keying.reset();
+      });
+      
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
@@ -92,7 +98,7 @@ describe('seal', function() {
             id: 'https://api.example.com/'
           },
           usage: 'encrypt',
-          algorithms: [ 'aes256-cbc' ]
+          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
         });
       });
       
@@ -116,6 +122,74 @@ describe('seal', function() {
         });
       });
     }); // encrypting to audience
+    
+    describe('encrypting to audience with aes-128-ctr encryption', function() {
+      var token;
+      before(function(done) {
+        var audience = [ {
+          id: 'https://rs1.example.com/'
+        } ];
+        
+        seal({ foo: 'bar' }, { audience: audience }, function(err, t) {
+          token = t;
+          done(err);
+        });
+      });
+      
+      after(function() {
+        keying.reset();
+      });
+      
+      it('should query for key', function() {
+        expect(keying.callCount).to.equal(1);
+        var call = keying.getCall(0);
+        expect(call.args[0]).to.deep.equal({
+          recipient: {
+            id: 'https://rs1.example.com/'
+          },
+          usage: 'encrypt',
+          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
+        });
+      });
+      
+      it('should generate a token', function() {
+        expect(token.length).to.be.above(0);
+        expect(token.substr(0, 11)).to.equal('Fe26.2*rs1*');
+      });
+      
+      describe('verifying claims', function() {
+        var claims;
+        before(function(done) {
+          var opts = {
+              encryption: {
+                saltBits: 128,
+                algorithm: 'aes-128-ctr',
+                iterations: 1,
+                minPasswordlength: 16
+              },
+              integrity: {
+                  saltBits: 256,
+                  algorithm: 'sha256',
+                  iterations: 1,
+                  minPasswordlength: 32
+              },
+              ttl: 0,
+              timestampSkewSec: 60,
+              localtimeOffsetMsec: 0
+          }
+          
+          Iron.unseal(token, 'RS1-12abcdef7890abcdef7890abcdef', opts, function(err, c) {
+            claims = c;
+            done(err);
+          });
+        });
+        
+        it('should be correct', function() {
+          expect(claims).to.be.an('object');
+          expect(claims.foo).to.equal('bar');
+        });
+      });
+    }); // encrypting to audience with aes-128-ctr encryption
     
   });
   

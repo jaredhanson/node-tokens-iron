@@ -16,6 +16,8 @@ describe('unseal', function() {
         switch (q.id) {
         case 'k1':
           return cb(null, [ { secret: '12abcdef7890abcdef7890abcdef7890' } ]);
+        case 'rs1':
+          return cb(null, [ { secret: 'RS1-12abcdef7890abcdef7890abcdef', algorithm: 'aes128-ctr' } ]);
         default:
           return cb(null, [ { secret: 'API-12abcdef7890abcdef7890abcdef' } ]);
         }
@@ -104,6 +106,46 @@ describe('unseal', function() {
         });
       });
     }); // unsealing from specific key
+    
+    describe('unsealing from specific key with aes-128-ctr encryption', function() {
+      var tkn;
+      before(function(done) {
+        var token = 'Fe26.2*rs1*53ec68594e9a1cce7d218204a057b8a4*axVXk6wymK23icn-tV8QsA*na07AthWC4sQHlDlXg**53840cce2a1c9c31e6395c121c7727c80891f440022b2abcd5b81e4a3bbbbbc9*9xzbl80Ih12hzu_tcFAjFdcAlOAGvSBZtw9kZt3pcCM';
+        
+        unseal(token, function(err, t) {
+          tkn = t;
+          done(err);
+        });
+      });
+      
+      after(function() {
+        keying.reset();
+      });
+      
+      it('should query for key', function() {
+        expect(keying.callCount).to.equal(1);
+        var call = keying.getCall(0);
+        expect(call.args[0]).to.deep.equal({
+          usage: 'decrypt',
+          id: 'rs1',
+          algorithms: [ 'aes256-cbc' ]
+        });
+      });
+      
+      it('should unseal token', function() {
+        expect(tkn).to.be.an('object');
+        expect(Object.keys(tkn)).to.have.length(2);
+        
+        expect(tkn).to.deep.equal({
+          headers: {
+            keyID: 'rs1'
+          },
+          claims: {
+            foo: 'bar'
+          }
+        });
+      });
+    }); // unsealing from specific key with aes-128-ctr encryption
     
   });
   
