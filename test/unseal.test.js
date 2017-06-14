@@ -48,7 +48,7 @@ describe('unseal', function() {
         expect(call.args[0]).to.deep.equal({
           usage: 'decrypt',
           id: undefined,
-          algorithms: [ 'aes256-cbc' ]
+          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
         });
       });
       
@@ -88,7 +88,7 @@ describe('unseal', function() {
         expect(call.args[0]).to.deep.equal({
           usage: 'decrypt',
           id: 'k1',
-          algorithms: [ 'aes256-cbc' ]
+          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
         });
       });
       
@@ -128,7 +128,7 @@ describe('unseal', function() {
         expect(call.args[0]).to.deep.equal({
           usage: 'decrypt',
           id: 'rs1',
-          algorithms: [ 'aes256-cbc' ]
+          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
         });
       });
       
