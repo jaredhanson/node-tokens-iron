@@ -21,7 +21,7 @@ describe('seal', function() {
         case 'https://api.example.com/':
           return cb(null, [ { secret: 'API-12abcdef7890abcdef7890abcdef' } ]);
         case 'https://rs1.example.com/':
-          return cb(null, [ { id: 'rs1', secret: 'RS1-12abcdef7890abcdef7890abcdef', algorithm: 'aes128-ctr' } ]);
+          return cb(null, [ { id: 'rs1', secret: 'RS1-12abcdef7890abcdef7890abcdef' } ]);
         }
       });
       
@@ -130,7 +130,12 @@ describe('seal', function() {
           id: 'https://rs1.example.com/'
         } ];
         
-        seal({ foo: 'bar' }, { audience: audience }, function(err, t) {
+        var options = {
+          audience: audience,
+          encryption: { algorithms: [ 'aes128-ctr' ], saltLength: 128 }
+        }
+        
+        seal({ foo: 'bar' }, options, function(err, t) {
           token = t;
           done(err);
         });
