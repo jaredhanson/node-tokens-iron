@@ -121,7 +121,7 @@ describe('seal', function() {
       });
     }); // encrypting to audience
     
-    describe('encrypting to audience with aes-128-ctr encryption', function() {
+    describe('encrypting to audience with aes128-ctr and 128 bit encryption salt', function() {
       var token;
       before(function(done) {
         var audience = [ {
@@ -164,21 +164,21 @@ describe('seal', function() {
         var claims;
         before(function(done) {
           var opts = {
-              encryption: {
-                saltBits: 128,
-                algorithm: 'aes-128-ctr',
-                iterations: 1,
-                minPasswordlength: 16
-              },
-              integrity: {
-                  saltBits: 256,
-                  algorithm: 'sha256',
-                  iterations: 1,
-                  minPasswordlength: 32
-              },
-              ttl: 0,
-              timestampSkewSec: 60,
-              localtimeOffsetMsec: 0
+            encryption: {
+              saltBits: 128,
+              algorithm: 'aes-128-ctr',
+              iterations: 1,
+              minPasswordlength: 32
+            },
+            integrity: {
+              saltBits: 256,
+              algorithm: 'sha256',
+              iterations: 1,
+              minPasswordlength: 32
+            },
+            ttl: 0,
+            timestampSkewSec: 60,
+            localtimeOffsetMsec: 0
           }
           
           Iron.unseal(token, 'API-12abcdef7890abcdef7890abcdef', opts, function(err, c) {
@@ -192,7 +192,7 @@ describe('seal', function() {
           expect(claims.foo).to.equal('bar');
         });
       });
-    }); // encrypting to audience with aes-128-ctr encryption
+    }); // encrypting to audience with aes128-ctr and 128 bit encryption salt
     
   });
   
