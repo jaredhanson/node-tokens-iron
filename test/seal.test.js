@@ -20,8 +20,6 @@ describe('seal', function() {
         switch (q.recipient.id) {
         case 'https://api.example.com/':
           return cb(null, [ { secret: 'API-12abcdef7890abcdef7890abcdef' } ]);
-        case 'https://rs1.example.com/':
-          return cb(null, [ { id: 'rs1', secret: 'RS1-12abcdef7890abcdef7890abcdef' } ]);
         }
       });
       
@@ -127,7 +125,7 @@ describe('seal', function() {
       var token;
       before(function(done) {
         var audience = [ {
-          id: 'https://rs1.example.com/'
+          id: 'https://api.example.com/'
         } ];
         
         var options = {
@@ -150,7 +148,7 @@ describe('seal', function() {
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
           recipient: {
-            id: 'https://rs1.example.com/'
+            id: 'https://api.example.com/'
           },
           usage: 'deriveKey',
           algorithms: [ 'pbkdf2' ]
@@ -159,7 +157,7 @@ describe('seal', function() {
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
-        expect(token.substr(0, 11)).to.equal('Fe26.2*rs1*');
+        expect(token.substr(0, 8)).to.equal('Fe26.2**');
       });
       
       describe('verifying claims', function() {
@@ -183,7 +181,7 @@ describe('seal', function() {
               localtimeOffsetMsec: 0
           }
           
-          Iron.unseal(token, 'RS1-12abcdef7890abcdef7890abcdef', opts, function(err, c) {
+          Iron.unseal(token, 'API-12abcdef7890abcdef7890abcdef', opts, function(err, c) {
             claims = c;
             done(err);
           });
