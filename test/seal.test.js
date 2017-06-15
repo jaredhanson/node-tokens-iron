@@ -46,9 +46,9 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
-          usage: 'encrypt',
+          usage: 'deriveKey',
           recipient: undefined,
-          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
+          algorithms: [ 'pbkdf2' ]
         });
       });
       
@@ -97,8 +97,8 @@ describe('seal', function() {
           recipient: {
             id: 'https://api.example.com/'
           },
-          usage: 'encrypt',
-          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
+          usage: 'deriveKey',
+          algorithms: [ 'pbkdf2' ]
         });
       });
       
@@ -147,8 +147,8 @@ describe('seal', function() {
           recipient: {
             id: 'https://rs1.example.com/'
           },
-          usage: 'encrypt',
-          algorithms: [ 'aes256-cbc', 'aes128-ctr' ]
+          usage: 'deriveKey',
+          algorithms: [ 'pbkdf2' ]
         });
       });
       
