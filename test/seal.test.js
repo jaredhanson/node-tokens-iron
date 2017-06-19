@@ -121,7 +121,7 @@ describe('seal', function() {
       });
     }); // encrypting to audience
     
-    describe('encrypting to audience with aes128-ctr and 128 bit encryption salt', function() {
+    describe('encrypting to audience with AES-128 in CTR mode and 128-bit encryption salt', function() {
       var token;
       before(function(done) {
         var audience = [ {
@@ -192,8 +192,8 @@ describe('seal', function() {
           expect(claims.foo).to.equal('bar');
         });
       });
-    }); // encrypting to audience with aes128-ctr and 128 bit encryption salt
+    }); // encrypting to audience with AES-128 in CTR mode and 128-bit encryption salt
     
-  });
+  }); // using defaults
   
-});
+}); // seal

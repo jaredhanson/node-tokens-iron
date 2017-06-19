@@ -25,7 +25,7 @@ describe('unseal', function() {
     });
     
     
-    describe('unsealing from unspecified key', function() {
+    describe('decrypting', function() {
       var tkn;
       before(function(done) {
         var token = 'Fe26.2**a26b6f7d7ea3e27e43d19e39323e6c71a5b48d92391a152e7ad4b251329886d6*POBMxPB55ziWCaTDrYrKIw*RAtJEMSA4zaRL0_opM-r1g**83fa7e47602b919b42e3d2f65e0e86e776ff251747c04d2b8c8ae2358dc98408*xDBJInWQNdFGKIxFaDCJRGpYoMO9xYYLFv27BYl-LDQ';
@@ -63,9 +63,9 @@ describe('unseal', function() {
           }
         });
       });
-    }); // unsealing from unspecified key
+    }); // decrypting
     
-    describe('unsealing from specific key', function() {
+    describe('decrypting with specific key', function() {
       var tkn;
       before(function(done) {
         var token = 'Fe26.2*k1*d07707532253175ab08dd0c852daa869788e27e09cb3357fcd81f099c3d2dc91*SnwigF0hAiavmOZmOSJBAw*xuthZNzot190oBfOOlEcwA**adda380704c56029f5f95abd14ccd8a31c4426a54ce2d31eb885426ca7336cec*iRBd9muS5WQ3_cvcmedjujPX7lWKuABoyGwLXhwN0lU';
@@ -103,11 +103,11 @@ describe('unseal', function() {
           }
         });
       });
-    }); // unsealing from specific key
+    }); // decrypting with specific key
     
   }); // using defaults
   
-  describe('using aes128-ctr encryption', function() {
+  describe('using AES-128 in CTR mode', function() {
     var unseal, keying;
     
     before(function() {
@@ -121,7 +121,7 @@ describe('unseal', function() {
       unseal = setup({ encryption: { algorithm: 'aes128-ctr' } }, keying);
     });
     
-    describe('unsealing', function() {
+    describe('decrypting', function() {
       var tkn;
       before(function(done) {
         var token = 'Fe26.2*rs1*53ec68594e9a1cce7d218204a057b8a4*axVXk6wymK23icn-tV8QsA*na07AthWC4sQHlDlXg**53840cce2a1c9c31e6395c121c7727c80891f440022b2abcd5b81e4a3bbbbbc9*9xzbl80Ih12hzu_tcFAjFdcAlOAGvSBZtw9kZt3pcCM';
@@ -159,8 +159,8 @@ describe('unseal', function() {
           }
         });
       });
-    }); // unsealing
+    }); // decrypting
     
-  }); // using aes128-ctr encryption
+  }); // using AES-128 in CTR mode
   
-});
+}); // unseal
