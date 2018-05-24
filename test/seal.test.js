@@ -30,7 +30,7 @@ describe('seal', function() {
     describe('encrypting to self', function() {
       var token;
       before(function(done) {
-        seal({ foo: 'bar' }, function(err, t) {
+        seal({ foo: 'bar' }, null, function(err, t) {
           token = t;
           done(err);
         });
@@ -78,7 +78,7 @@ describe('seal', function() {
           id: 'https://api.example.com/'
         } ];
         
-        seal({ foo: 'bar' }, { audience: audience }, function(err, t) {
+        seal({ foo: 'bar' }, audience, function(err, t) {
           token = t;
           done(err);
         });
@@ -129,11 +129,10 @@ describe('seal', function() {
         } ];
         
         var options = {
-          audience: audience,
           encryption: { algorithms: [ 'aes128-ctr' ], saltLength: 128 }
         }
         
-        seal({ foo: 'bar' }, options, function(err, t) {
+        seal({ foo: 'bar' }, audience, options, function(err, t) {
           token = t;
           done(err);
         });
