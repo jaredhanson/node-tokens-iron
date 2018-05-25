@@ -52,16 +52,8 @@ describe('unseal', function() {
       });
       
       it('should unseal token', function() {
-        expect(tkn).to.be.an('object');
-        expect(Object.keys(tkn)).to.have.length(2);
-        
         expect(tkn).to.deep.equal({
-          headers: {
-            keyID: undefined
-          },
-          claims: {
-            foo: 'bar'
-          }
+          foo: 'bar'
         });
       });
     }); // decrypting
@@ -93,16 +85,8 @@ describe('unseal', function() {
       });
       
       it('should unseal token', function() {
-        expect(tkn).to.be.an('object');
-        expect(Object.keys(tkn)).to.have.length(2);
-        
         expect(tkn).to.deep.equal({
-          headers: {
-            keyID: 'k1'
-          },
-          claims: {
-            foo: 'bar'
-          }
+          foo: 'bar'
         });
       });
     }); // decrypting with specific key
@@ -150,16 +134,8 @@ describe('unseal', function() {
       });
       
       it('should unseal token', function() {
-        expect(tkn).to.be.an('object');
-        expect(Object.keys(tkn)).to.have.length(2);
-        
         expect(tkn).to.deep.equal({
-          headers: {
-            keyID: 'rs1'
-          },
-          claims: {
-            foo: 'bar'
-          }
+          foo: 'bar'
         });
       });
     }); // decrypting
