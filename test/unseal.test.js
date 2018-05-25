@@ -46,7 +46,8 @@ describe('unseal', function() {
         expect(call.args[0]).to.deep.equal({
           usage: 'deriveKey',
           id: undefined,
-          algorithms: [ 'pbkdf2' ]
+          algorithms: [ 'pbkdf2' ],
+          foo: true
         });
       });
       
@@ -86,7 +87,8 @@ describe('unseal', function() {
         expect(call.args[0]).to.deep.equal({
           usage: 'deriveKey',
           id: 'k1',
-          algorithms: [ 'pbkdf2' ]
+          algorithms: [ 'pbkdf2' ],
+          foo: true
         });
       });
       
@@ -142,7 +144,8 @@ describe('unseal', function() {
         expect(call.args[0]).to.deep.equal({
           usage: 'deriveKey',
           id: 'rs1',
-          algorithms: [ 'pbkdf2' ]
+          algorithms: [ 'pbkdf2' ],
+          foo: true
         });
       });
       
