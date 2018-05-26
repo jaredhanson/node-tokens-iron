@@ -8,45 +8,27 @@ var expect = require('chai').expect;
 
 describe('seal', function() {
   
-  describe('using defaults', function() {
-    var seal, keying;
-    
-    before(function() {
-      keying = sinon.spy(function(entity, q, cb){
-        if (!entity) {
-          return cb(null, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' });
-        }
-        
-        switch (entity.id) {
-        case 'https://api.example.com/':
-          return cb(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
-        }
-      });
-      
-      seal = setup(keying);
-    });
-    
+  describe('defaults', function() {
     
     describe('encrypting to self', function() {
       var token;
+      
+      var keying = sinon.stub().yields(null, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' });
+      
       before(function(done) {
-        seal({ foo: 'bar' }, null, function(err, t) {
+        var seal = setup(keying);
+        seal({ foo: 'bar' }, { identifier: 'https://self-issued.me' }, function(err, t) {
           token = t;
           done(err);
         });
       });
       
-      after(function() {
-        keying.reset();
-      });
-      
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
-        expect(call.args[0]).to.be.undefined;
+        expect(call.args[0]).to.deep.equal({ identifier: 'https://self-issued.me' });
         expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
-          recipient: undefined,
           algorithms: [ 'pbkdf2' ]
         });
       });
@@ -72,21 +54,21 @@ describe('seal', function() {
       });
     }); // encrypting to self
     
-    describe('encrypting to audience', function() {
+    describe('encrypting to recipient', function() {
       var token;
+      
+      var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
+      
       before(function(done) {
-        var audience = [ {
+        var recipients = [ {
           id: 'https://api.example.com/'
         } ];
         
-        seal({ foo: 'bar' }, audience, function(err, t) {
+        var seal = setup(keying);
+        seal({ foo: 'bar' }, recipients, function(err, t) {
           token = t;
           done(err);
         });
-      });
-      
-      after(function() {
-        keying.reset();
       });
       
       it('should query for key', function() {
@@ -96,9 +78,6 @@ describe('seal', function() {
             id: 'https://api.example.com/'
         });
         expect(call.args[1]).to.deep.equal({
-          recipient: {
-            id: 'https://api.example.com/'
-          },
           usage: 'deriveKey',
           algorithms: [ 'pbkdf2' ]
         });
@@ -123,12 +102,15 @@ describe('seal', function() {
           expect(claims.foo).to.equal('bar');
         });
       });
-    }); // encrypting to audience
+    }); // encrypting to recipient
     
-    describe('encrypting to audience with AES-128 in CTR mode and 128-bit encryption salt', function() {
+    describe('encrypting to recipient with AES-128 in CTR mode and 128-bit encryption salt', function() {
       var token;
+      
+      var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
+      
       before(function(done) {
-        var audience = [ {
+        var recipients = [ {
           id: 'https://api.example.com/'
         } ];
         
@@ -136,14 +118,11 @@ describe('seal', function() {
           encryption: { algorithms: [ 'aes128-ctr' ], saltLength: 128 }
         }
         
-        seal({ foo: 'bar' }, audience, options, function(err, t) {
+        var seal = setup(keying);
+        seal({ foo: 'bar' }, recipients, options, function(err, t) {
           token = t;
           done(err);
         });
-      });
-      
-      after(function() {
-        keying.reset();
       });
       
       it('should query for key', function() {
@@ -153,9 +132,6 @@ describe('seal', function() {
             id: 'https://api.example.com/'
         });
         expect(call.args[1]).to.deep.equal({
-          recipient: {
-            id: 'https://api.example.com/'
-          },
           usage: 'deriveKey',
           algorithms: [ 'pbkdf2' ]
         });
