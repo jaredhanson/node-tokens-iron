@@ -29,6 +29,7 @@ describe('unseal', function() {
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
+        expect(call.args[0]).to.be.undefined;
         expect(call.args[1]).to.deep.equal({
           id: undefined,
           usage: 'deriveKey',
@@ -47,6 +48,45 @@ describe('unseal', function() {
         });
       });
     }); // decrypting
+    
+    describe('decrypting with issuer', function() {
+      var claims, conditions;
+      
+      var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
+      
+      before(function(done) {
+        var token = 'Fe26.2**a26b6f7d7ea3e27e43d19e39323e6c71a5b48d92391a152e7ad4b251329886d6*POBMxPB55ziWCaTDrYrKIw*RAtJEMSA4zaRL0_opM-r1g**83fa7e47602b919b42e3d2f65e0e86e776ff251747c04d2b8c8ae2358dc98408*xDBJInWQNdFGKIxFaDCJRGpYoMO9xYYLFv27BYl-LDQ';
+        
+        var unseal = setup(keying);
+        unseal(token, { issuer: { identifier: 'https://server.example.com' } }, function(err, c, co) {
+          claims = c;
+          conditions = co;
+          done(err);
+        });
+      });
+      
+      it('should query for key', function() {
+        expect(keying.callCount).to.equal(1);
+        var call = keying.getCall(0);
+        expect(call.args[0]).to.deep.equal({ identifier: 'https://server.example.com' });
+        expect(call.args[1]).to.deep.equal({
+          id: undefined,
+          usage: 'deriveKey',
+          algorithms: [ 'pbkdf2' ]
+        });
+      });
+      
+      it('should yield claims', function() {
+        expect(claims).to.deep.equal({
+          foo: 'bar'
+        });
+      });
+      
+      it('should yield conditions', function() {
+        expect(conditions).to.deep.equal({
+        });
+      });
+    }); // decrypting with issuer
     
     describe('decrypting with specific key', function() {
       var claims, conditions;
@@ -71,6 +111,7 @@ describe('unseal', function() {
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
+        expect(call.args[0]).to.be.undefined;
         expect(call.args[1]).to.deep.equal({
           id: 'k1',
           usage: 'deriveKey',

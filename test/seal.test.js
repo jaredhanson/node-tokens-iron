@@ -75,7 +75,7 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
-            id: 'https://api.example.com/'
+          id: 'https://api.example.com/'
         });
         expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
@@ -129,7 +129,7 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
-            id: 'https://api.example.com/'
+          id: 'https://api.example.com/'
         });
         expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
