@@ -47,7 +47,8 @@ describe('unseal', function() {
           usage: 'deriveKey',
           id: undefined,
           algorithms: [ 'pbkdf2' ],
-          foo: true
+          foo: true,
+          sender: undefined
         });
       });
       
@@ -80,7 +81,8 @@ describe('unseal', function() {
           usage: 'deriveKey',
           id: 'k1',
           algorithms: [ 'pbkdf2' ],
-          foo: true
+          foo: true,
+          sender: undefined
         });
       });
       
@@ -129,7 +131,8 @@ describe('unseal', function() {
           usage: 'deriveKey',
           id: 'rs1',
           algorithms: [ 'pbkdf2' ],
-          foo: true
+          foo: true,
+          sender: undefined
         });
       });
       
