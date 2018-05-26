@@ -196,7 +196,7 @@ describe('seal', function() {
       
       it('should error', function() {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Unable to seal iron tokens to multiple recipients');
+        expect(error.message).to.equal('Unable to seal iron token to multiple recipients');
       });
       
       it('should not generate a token', function() {
