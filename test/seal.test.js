@@ -176,6 +176,34 @@ describe('seal', function() {
       });
     }); // encrypting to audience with AES-128 in CTR mode and 128-bit encryption salt
     
+    describe('encrypting to multiple recipients', function() {
+      var error, token;
+      
+      before(function(done) {
+        var recipients = [ {
+          id: 'https://api.example.com/'
+        }, {
+          id: 'https://api.example.net/'
+        } ];
+        
+        var seal = setup(function(){});
+        seal({ foo: 'bar' }, recipients, function(err, t) {
+          error = err;
+          token = t;
+          done();
+        });
+      });
+      
+      it('should error', function() {
+        expect(error).to.be.an.instanceOf(Error);
+        expect(error.message).to.equal('Unable to seal iron tokens to multiple recipients');
+      });
+      
+      it('should not generate a token', function() {
+        expect(token).to.be.undefined;
+      });
+    }); // encrypting to multiple recipients
+    
   }); // using defaults
   
 }); // seal
