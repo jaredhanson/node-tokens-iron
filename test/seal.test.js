@@ -43,7 +43,7 @@ describe('seal', function() {
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
-        expect(call.args[0]).to.be.null;
+        expect(call.args[0]).to.be.undefined;
         expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
           recipient: undefined,

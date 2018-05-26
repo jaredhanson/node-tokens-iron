@@ -12,12 +12,12 @@ describe('unseal', function() {
     var unseal, keying;
     
     before(function() {
-      keying = sinon.spy(function(q, cb){
+      keying = sinon.spy(function(entity, q, cb){
         switch (q.id) {
         case 'k1':
-          return cb(null, [ { secret: '12abcdef7890abcdef7890abcdef7890' } ]);
+          return cb(null, { secret: '12abcdef7890abcdef7890abcdef7890' });
         default:
-          return cb(null, [ { secret: 'API-12abcdef7890abcdef7890abcdef' } ]);
+          return cb(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
         }
       });
       
@@ -43,7 +43,7 @@ describe('unseal', function() {
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
-        expect(call.args[0]).to.deep.equal({
+        expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
           id: undefined,
           algorithms: [ 'pbkdf2' ],
@@ -77,7 +77,7 @@ describe('unseal', function() {
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
-        expect(call.args[0]).to.deep.equal({
+        expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
           id: 'k1',
           algorithms: [ 'pbkdf2' ],
@@ -99,10 +99,10 @@ describe('unseal', function() {
     var unseal, keying;
     
     before(function() {
-      keying = sinon.spy(function(q, cb){
+      keying = sinon.spy(function(entity, q, cb){
         switch (q.id) {
         case 'rs1':
-          return cb(null, [ { secret: 'RS1-12abcdef7890abcdef7890abcdef' } ]);
+          return cb(null, { secret: 'RS1-12abcdef7890abcdef7890abcdef' });
         }
       });
       
@@ -127,7 +127,7 @@ describe('unseal', function() {
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
-        expect(call.args[0]).to.deep.equal({
+        expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
           id: 'rs1',
           algorithms: [ 'pbkdf2' ],
