@@ -12,14 +12,14 @@ describe('seal', function() {
     var seal, keying;
     
     before(function() {
-      keying = sinon.spy(function(q, cb){
-        if (!q.recipient) {
-          return cb(null, [ { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' } ]);
+      keying = sinon.spy(function(entity, q, cb){
+        if (!entity) {
+          return cb(null, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' });
         }
         
-        switch (q.recipient.id) {
+        switch (entity.id) {
         case 'https://api.example.com/':
-          return cb(null, [ { secret: 'API-12abcdef7890abcdef7890abcdef' } ]);
+          return cb(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
         }
       });
       
@@ -43,7 +43,8 @@ describe('seal', function() {
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
-        expect(call.args[0]).to.deep.equal({
+        expect(call.args[0]).to.be.null;
+        expect(call.args[1]).to.deep.equal({
           usage: 'deriveKey',
           recipient: undefined,
           algorithms: [ 'pbkdf2' ]
@@ -92,6 +93,9 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
+            id: 'https://api.example.com/'
+        });
+        expect(call.args[1]).to.deep.equal({
           recipient: {
             id: 'https://api.example.com/'
           },
@@ -146,6 +150,9 @@ describe('seal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[0]).to.deep.equal({
+            id: 'https://api.example.com/'
+        });
+        expect(call.args[1]).to.deep.equal({
           recipient: {
             id: 'https://api.example.com/'
           },
