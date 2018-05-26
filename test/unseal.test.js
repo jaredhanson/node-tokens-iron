@@ -30,8 +30,8 @@ describe('unseal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[1]).to.deep.equal({
-          usage: 'deriveKey',
           id: undefined,
+          usage: 'deriveKey',
           algorithms: [ 'pbkdf2' ]
         });
       });
@@ -72,8 +72,8 @@ describe('unseal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[1]).to.deep.equal({
-          usage: 'deriveKey',
           id: 'k1',
+          usage: 'deriveKey',
           algorithms: [ 'pbkdf2' ]
         });
       });
@@ -115,8 +115,8 @@ describe('unseal', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
         expect(call.args[1]).to.deep.equal({
-          usage: 'deriveKey',
           id: 'rs1',
+          usage: 'deriveKey',
           algorithms: [ 'pbkdf2' ]
         });
       });
