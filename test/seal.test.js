@@ -13,16 +13,17 @@ describe('seal', function() {
     describe('encrypting to self', function() {
       var token;
       
-      var keying = sinon.stub().yields(null, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' });
+      //var keying = sinon.stub().yields(null, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' });
       
       before(function(done) {
-        var seal = setup(keying);
-        seal({ foo: 'bar' }, { identifier: 'https://self-issued.me' }, function(err, t) {
+        var seal = setup();
+        seal({ foo: 'bar' }, { secret: '12abcdef7890abcdef7890abcdef7890', id: 'k1', identifier: 'https://self-issued.me' }, function(err, t) {
           token = t;
           done(err);
         });
       });
       
+      /*
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
@@ -32,6 +33,7 @@ describe('seal', function() {
           algorithms: [ 'pbkdf2' ]
         });
       });
+      */
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
@@ -57,20 +59,21 @@ describe('seal', function() {
     describe('encrypting to recipient', function() {
       var token;
       
-      var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
+      //var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
       
       before(function(done) {
         var recipients = [ {
           id: 'https://api.example.com/'
         } ];
         
-        var seal = setup(keying);
-        seal({ foo: 'bar' }, recipients, function(err, t) {
+        var seal = setup();
+        seal({ foo: 'bar' }, { secret: 'API-12abcdef7890abcdef7890abcdef', recipients: recipients }, function(err, t) {
           token = t;
           done(err);
         });
       });
       
+      /*
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
@@ -82,6 +85,7 @@ describe('seal', function() {
           algorithms: [ 'pbkdf2' ]
         });
       });
+      */
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
@@ -107,7 +111,7 @@ describe('seal', function() {
     describe('encrypting to recipient with AES-128 in CTR mode and 128-bit encryption salt', function() {
       var token;
       
-      var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
+      //var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
       
       before(function(done) {
         var recipients = [ {
@@ -115,16 +119,19 @@ describe('seal', function() {
         } ];
         
         var options = {
+          secret: 'API-12abcdef7890abcdef7890abcdef',
+          recipients: recipients,
           encryption: { algorithms: [ 'aes128-ctr' ], saltLength: 128 }
         }
         
-        var seal = setup(keying);
-        seal({ foo: 'bar' }, recipients, options, function(err, t) {
+        var seal = setup();
+        seal({ foo: 'bar' }, options, function(err, t) {
           token = t;
           done(err);
         });
       });
       
+      /*
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
@@ -136,6 +143,7 @@ describe('seal', function() {
           algorithms: [ 'pbkdf2' ]
         });
       });
+      */
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
@@ -187,7 +195,7 @@ describe('seal', function() {
         } ];
         
         var seal = setup(function(){});
-        seal({ foo: 'bar' }, recipients, function(err, t) {
+        seal({ foo: 'bar' }, { recipients: recipients }, function(err, t) {
           error = err;
           token = t;
           done();
