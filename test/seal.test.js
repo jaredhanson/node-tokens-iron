@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var Iron = require('iron');
-var setup = require('../lib/seal');
+var seal = require('../lib/seal');
 var sinon = require('sinon');
 var expect = require('chai').expect;
 
@@ -14,7 +14,6 @@ describe('seal', function() {
       var token;
       
       before(function(done) {
-        var seal = setup();
         seal({ foo: 'bar' }, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' }, function(err, t) {
           token = t;
           done(err);
@@ -46,7 +45,6 @@ describe('seal', function() {
       var token;
       
       before(function(done) {
-        var seal = setup();
         seal({ foo: 'bar' }, { secret: 'API-12abcdef7890abcdef7890abcdef' }, function(err, t) {
           token = t;
           done(err);
@@ -83,7 +81,6 @@ describe('seal', function() {
           encryption: { algorithms: [ 'aes128-ctr' ], saltLength: 128 }
         }
         
-        var seal = setup();
         seal({ foo: 'bar' }, options, function(err, t) {
           token = t;
           done(err);
