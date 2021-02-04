@@ -13,27 +13,13 @@ describe('seal', function() {
     describe('encrypting to self', function() {
       var token;
       
-      //var keying = sinon.stub().yields(null, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' });
-      
       before(function(done) {
         var seal = setup();
-        seal({ foo: 'bar' }, { secret: '12abcdef7890abcdef7890abcdef7890', id: 'k1', identifier: 'https://self-issued.me' }, function(err, t) {
+        seal({ foo: 'bar' }, { id: 'k1', secret: '12abcdef7890abcdef7890abcdef7890' }, function(err, t) {
           token = t;
           done(err);
         });
       });
-      
-      /*
-      it('should query for key', function() {
-        expect(keying.callCount).to.equal(1);
-        var call = keying.getCall(0);
-        expect(call.args[0]).to.deep.equal({ identifier: 'https://self-issued.me' });
-        expect(call.args[1]).to.deep.equal({
-          usage: 'deriveKey',
-          algorithms: [ 'pbkdf2' ]
-        });
-      });
-      */
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
@@ -59,33 +45,13 @@ describe('seal', function() {
     describe('encrypting to recipient', function() {
       var token;
       
-      //var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
-      
       before(function(done) {
-        var recipients = [ {
-          id: 'https://api.example.com/'
-        } ];
-        
         var seal = setup();
-        seal({ foo: 'bar' }, { secret: 'API-12abcdef7890abcdef7890abcdef', recipients: recipients }, function(err, t) {
+        seal({ foo: 'bar' }, { secret: 'API-12abcdef7890abcdef7890abcdef' }, function(err, t) {
           token = t;
           done(err);
         });
       });
-      
-      /*
-      it('should query for key', function() {
-        expect(keying.callCount).to.equal(1);
-        var call = keying.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: 'https://api.example.com/'
-        });
-        expect(call.args[1]).to.deep.equal({
-          usage: 'deriveKey',
-          algorithms: [ 'pbkdf2' ]
-        });
-      });
-      */
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
@@ -111,16 +77,9 @@ describe('seal', function() {
     describe('encrypting to recipient with AES-128 in CTR mode and 128-bit encryption salt', function() {
       var token;
       
-      //var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
-      
       before(function(done) {
-        var recipients = [ {
-          id: 'https://api.example.com/'
-        } ];
-        
         var options = {
           secret: 'API-12abcdef7890abcdef7890abcdef',
-          recipients: recipients,
           encryption: { algorithms: [ 'aes128-ctr' ], saltLength: 128 }
         }
         
@@ -130,20 +89,6 @@ describe('seal', function() {
           done(err);
         });
       });
-      
-      /*
-      it('should query for key', function() {
-        expect(keying.callCount).to.equal(1);
-        var call = keying.getCall(0);
-        expect(call.args[0]).to.deep.equal({
-          id: 'https://api.example.com/'
-        });
-        expect(call.args[1]).to.deep.equal({
-          usage: 'deriveKey',
-          algorithms: [ 'pbkdf2' ]
-        });
-      });
-      */
       
       it('should generate a token', function() {
         expect(token.length).to.be.above(0);
