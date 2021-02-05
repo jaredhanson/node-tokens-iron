@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var Iron = require('iron');
-var setup = require('../lib/unseal');
+var unseal = require('../lib/unseal');
 var sinon = require('sinon');
 var expect = require('chai').expect;
 
@@ -18,7 +18,6 @@ describe('unseal', function() {
       before(function(done) {
         var token = 'Fe26.2**a26b6f7d7ea3e27e43d19e39323e6c71a5b48d92391a152e7ad4b251329886d6*POBMxPB55ziWCaTDrYrKIw*RAtJEMSA4zaRL0_opM-r1g**83fa7e47602b919b42e3d2f65e0e86e776ff251747c04d2b8c8ae2358dc98408*xDBJInWQNdFGKIxFaDCJRGpYoMO9xYYLFv27BYl-LDQ';
         
-        var unseal = setup();
         unseal(token, { secret: 'API-12abcdef7890abcdef7890abcdef' }, function(err, c, co) {
           claims = c;
           conditions = co;
@@ -59,7 +58,6 @@ describe('unseal', function() {
       before(function(done) {
         var token = 'Fe26.2**a26b6f7d7ea3e27e43d19e39323e6c71a5b48d92391a152e7ad4b251329886d6*POBMxPB55ziWCaTDrYrKIw*RAtJEMSA4zaRL0_opM-r1g**83fa7e47602b919b42e3d2f65e0e86e776ff251747c04d2b8c8ae2358dc98408*xDBJInWQNdFGKIxFaDCJRGpYoMO9xYYLFv27BYl-LDQ';
         
-        var unseal = setup();
         unseal(token, { secret: 'API-12abcdef7890abcdef7890abcdef', issuer: { identifier: 'https://server.example.com' } }, function(err, c, co) {
           claims = c;
           conditions = co;
@@ -100,7 +98,6 @@ describe('unseal', function() {
       before(function(done) {
         var token = 'Fe26.2*k1*d07707532253175ab08dd0c852daa869788e27e09cb3357fcd81f099c3d2dc91*SnwigF0hAiavmOZmOSJBAw*xuthZNzot190oBfOOlEcwA**adda380704c56029f5f95abd14ccd8a31c4426a54ce2d31eb885426ca7336cec*iRBd9muS5WQ3_cvcmedjujPX7lWKuABoyGwLXhwN0lU';
         
-        var unseal = setup();
         unseal(token, { secret: '12abcdef7890abcdef7890abcdef7890' }, function(err, c, co) {
           claims = c;
           conditions = co;
