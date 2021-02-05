@@ -13,19 +13,20 @@ describe('unseal', function() {
     describe('decrypting', function() {
       var claims, conditions;
       
-      var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
+      //var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
       
       before(function(done) {
         var token = 'Fe26.2**a26b6f7d7ea3e27e43d19e39323e6c71a5b48d92391a152e7ad4b251329886d6*POBMxPB55ziWCaTDrYrKIw*RAtJEMSA4zaRL0_opM-r1g**83fa7e47602b919b42e3d2f65e0e86e776ff251747c04d2b8c8ae2358dc98408*xDBJInWQNdFGKIxFaDCJRGpYoMO9xYYLFv27BYl-LDQ';
         
-        var unseal = setup(keying);
-        unseal(token, function(err, c, co) {
+        var unseal = setup();
+        unseal(token, { secret: 'API-12abcdef7890abcdef7890abcdef' }, function(err, c, co) {
           claims = c;
           conditions = co;
           done(err);
         });
       });
       
+      /*
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
@@ -36,6 +37,7 @@ describe('unseal', function() {
           algorithms: [ 'pbkdf2' ]
         });
       });
+      */
       
       it('should yield claims', function() {
         expect(claims).to.deep.equal({
@@ -52,19 +54,20 @@ describe('unseal', function() {
     describe('decrypting with issuer', function() {
       var claims, conditions;
       
-      var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
+      //var keying = sinon.stub().yields(null, { secret: 'API-12abcdef7890abcdef7890abcdef' });
       
       before(function(done) {
         var token = 'Fe26.2**a26b6f7d7ea3e27e43d19e39323e6c71a5b48d92391a152e7ad4b251329886d6*POBMxPB55ziWCaTDrYrKIw*RAtJEMSA4zaRL0_opM-r1g**83fa7e47602b919b42e3d2f65e0e86e776ff251747c04d2b8c8ae2358dc98408*xDBJInWQNdFGKIxFaDCJRGpYoMO9xYYLFv27BYl-LDQ';
         
-        var unseal = setup(keying);
-        unseal(token, { issuer: { identifier: 'https://server.example.com' } }, function(err, c, co) {
+        var unseal = setup();
+        unseal(token, { secret: 'API-12abcdef7890abcdef7890abcdef', issuer: { identifier: 'https://server.example.com' } }, function(err, c, co) {
           claims = c;
           conditions = co;
           done(err);
         });
       });
       
+      /*
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
@@ -75,6 +78,7 @@ describe('unseal', function() {
           algorithms: [ 'pbkdf2' ]
         });
       });
+      */
       
       it('should yield claims', function() {
         expect(claims).to.deep.equal({
@@ -91,13 +95,13 @@ describe('unseal', function() {
     describe('decrypting with specific key', function() {
       var claims, conditions;
       
-      var keying = sinon.stub().yields(null, { secret: '12abcdef7890abcdef7890abcdef7890' });
+      //var keying = sinon.stub().yields(null, { secret: '12abcdef7890abcdef7890abcdef7890' });
       
       before(function(done) {
         var token = 'Fe26.2*k1*d07707532253175ab08dd0c852daa869788e27e09cb3357fcd81f099c3d2dc91*SnwigF0hAiavmOZmOSJBAw*xuthZNzot190oBfOOlEcwA**adda380704c56029f5f95abd14ccd8a31c4426a54ce2d31eb885426ca7336cec*iRBd9muS5WQ3_cvcmedjujPX7lWKuABoyGwLXhwN0lU';
         
-        var unseal = setup(keying);
-        unseal(token, function(err, c, co) {
+        var unseal = setup();
+        unseal(token, { secret: '12abcdef7890abcdef7890abcdef7890' }, function(err, c, co) {
           claims = c;
           conditions = co;
           done(err);
@@ -105,9 +109,10 @@ describe('unseal', function() {
       });
       
       after(function() {
-        keying.reset();
+        //keying.reset();
       });
       
+      /*
       it('should query for key', function() {
         expect(keying.callCount).to.equal(1);
         var call = keying.getCall(0);
@@ -118,6 +123,7 @@ describe('unseal', function() {
           algorithms: [ 'pbkdf2' ]
         });
       });
+      */
       
       it('should yield claims', function() {
         expect(claims).to.deep.equal({
@@ -133,7 +139,7 @@ describe('unseal', function() {
     
   }); // defaults
   
-  describe('using AES-128 in CTR mode', function() {
+  describe.skip('using AES-128 in CTR mode', function() {
     var unseal, keying;
     
     describe('decrypting', function() {
