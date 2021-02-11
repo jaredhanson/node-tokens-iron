@@ -77,11 +77,10 @@ describe('seal', function() {
       
       before(function(done) {
         var options = {
-          secret: 'API-12abcdef7890abcdef7890abcdef',
           encryption: { algorithms: [ 'aes128-ctr' ], saltLength: 128 }
         }
         
-        seal({ foo: 'bar' }, options, function(err, t) {
+        seal({ foo: 'bar' }, { secret: 'API-12abcdef7890abcdef7890abcdef' }, options, function(err, t) {
           token = t;
           done(err);
         });
